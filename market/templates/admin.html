@@ -1,0 +1,69 @@
+<!-- This html is the inventory page, where admin can add the products and get item sold information-->
+{% extends 'base.html' %}
+{% block title %}
+    AdminPage
+{% endblock %}
+
+{%block content %}
+<div class="row" style="margin-top:20px; margin-left:20px;">
+    <div class="col-8">
+        <h2> Available items </h2>
+        <br>
+        <table class="table table-hover table-dark">
+            <thead>
+                <tr>
+                    <!-- Your Columns HERE -->
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Barcode</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Owned_by</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Your rows inside the table HERE: -->
+                {% for item in items %}
+                <tr>
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.barcode}}</td>
+                    <td>${{item.price}}</td>
+                    {% if item.owner != None %}
+                        {% for user in users%}
+                            {% if item.owner == user.id %}
+                                <td>{{user.username}}</td>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <td>{{item.owner}}</td>
+                        {% endif %}
+                        <td>
+                            {% include 'includes/admin_update_items_modal.html' %}
+                <button class="btn btn-outline btn-warning" data-toggle="modal" data-target="#Modal-UpdateItems-{{ item.id }}">Update </button>
+                        </td>
+                        <td>
+                            {% include 'includes/admin_delete_items_modal.html' %}
+                <button class="btn btn-outline btn-danger" data-toggle="modal" data-target="#Modal-DeleteItems-{{ item.id }}">Delete </button>
+                        </td>
+                </tr>
+                {% endfor %}
+                    
+            </tbody>
+        </table>
+        <br>
+        <div class="row text-center">
+            <div class= "col-md-12">
+                {% include 'includes/admin_add_items_modal.html' %}
+                <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#Modal-AddItems">Add items</button>
+            </div>
+            <div class= "col-md-6">
+                            </div>
+            
+        </div>
+        
+    </div>
+   
+</div>
+
+
+{% endblock %}
